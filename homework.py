@@ -29,7 +29,6 @@ HOMEWORK_VERDICTS = {
 
 homework_statuses = {}
 errors_sent_to_telegram = set()
-ALLOWED_STATUSES = tuple(HOMEWORK_VERDICTS.keys())
 
 
 def check_tokens():
@@ -84,7 +83,7 @@ def parse_status(homework):
     if homework_name is None:
         raise Exception('В ответе сервера нет ключа homework_name')
     status = homework.get('status')
-    if status not in ALLOWED_STATUSES:
+    if status not in HOMEWORK_VERDICTS:
         raise Exception(f'Неизвестный статус {status}')
     old_status = homework_statuses.get(homework_name)
     if status == old_status:
