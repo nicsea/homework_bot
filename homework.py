@@ -29,7 +29,7 @@ HOMEWORK_VERDICTS = {
 
 homework_statuses = {}
 errors_sent_to_telegram = set()
-ALLOWED_STATUSES = ('approved', 'reviewing', 'rejected')
+ALLOWED_STATUSES = tuple(HOMEWORK_VERDICTS.keys())
 
 
 def check_tokens():
@@ -104,7 +104,6 @@ def process_exception(bot, message):
     if message not in errors_sent_to_telegram:
         send_message(bot, message)
         errors_sent_to_telegram.add(message)
-    time.sleep(RETRY_PERIOD)
 
 
 def main():
@@ -123,13 +122,14 @@ def main():
                     send_message(bot, message)
             if not homeworks:
                 logger.debug('Нет домашних работ в проверке')
-            time.sleep(RETRY_PERIOD)
         except TypeError:
             message = 'Получен некорректный ответ от сервера. '
             process_exception(bot, message)
         except Exception as error:
             message = f'Сбой в работе программы: {error} '
             process_exception(bot, message)
+        finally:
+            time.sleep(RETRY_PERIOD)
 
 
 if __name__ == '__main__':
