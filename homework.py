@@ -63,8 +63,7 @@ def get_api_answer(timestamp):
         raise Exception
     status_code = statuses.status_code
     if status_code != 200:
-        message = f'Не получен ответ от сервера. ' \
-                  f'Код ответа: {status_code}. '
+        message = f'Не получен ответ от сервера. Код ответа: {status_code}. '
         raise Exception(message)
     return statuses.json()
 
